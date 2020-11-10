@@ -27,11 +27,16 @@
             margin-right: auto;
             width: 100%;
             text-align: center;
-            background-color: red;
         }
 
-        input#chan.synchronized {
+        input#chan.connected{
             background-color: green;
+        }
+        input#chan.disconnected {
+            background-color: red;
+        }
+        input#chan.connecting {
+            background-color: yellow;
         }
 
         #bottom {
@@ -72,19 +77,38 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
         $(function () {
+            setInterval(tickChannelColor, 1000)
             const channelInput = $('input#chan')
             window.websocketJumpTimeout = setTimeout(() => {
                 handleChangeWebsocketRoom()
             }, 1000)
             handleChangeWebsocketRoom()
             function tickChannelColor() {
-                const inputChan = channelInput.val()
-                const currentChan = window.channelName
-                $('input#chan').toggleClass('synchronized', inputChan === currentChan)
+                const states = ["connected", "disconnected", "connecting"]
+                function getState() {
+                    if (window.ws === undefined) {
+                        return "disconnected"
+                    }
+                    const inputChan = channelInput.val()
+                    const currentChan = window.channelName
+                    const sameChannelAsSession = inputChan === currentChan
+                    const isOpen = window.ws.readyState === window.ws.OPEN
+                    if (sameChannelAsSession && isOpen) {
+                        return "connected"
+                    } else if (!sameChannelAsSession) {
+                        return "connecting"
+                    } else {
+                        handleChangeWebsocketRoom()
+                        return "disconnected"
+                    }
+                }
+                const currentState = getState()
+                states.forEach(state => {
+                    channelInput.toggleClass(state, currentState === state)
+                })
             }
             function handleChangeWebsocketRoom() {
                 window.channelName = channelInput.val()
-                tickChannelColor()
                 console.log("changing to ", window.channelName)
                 if (window.ws) {
                     window.ws.close()
