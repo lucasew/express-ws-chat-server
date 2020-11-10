@@ -102,7 +102,7 @@
                 })
             }
             function getWebsocketUrl(channel) {
-                return `ws://${document.baseURI.slice(7)}listen/${channel}`
+                return `ws${document.baseURI[4] == 's' ? 's' : ''}://${document.baseURI.slice(7)}listen/${channel}`
             }
             function handleChangeChannelName() {
                 clearTimeout(window.websocketJumpTimeout)
