@@ -21,7 +21,7 @@ All the network transportation happens using WebSocket or HTTP in some tool rout
   - `/emit/:topic`: Send a message to a topic using a http request.
     - **NOTE**: Maximum size of payload is 100kb. 
     - It doesn't care about the mime type.
-  -  `/wait-next/:topic`: HTTP endpoint that hangs until the next message in a topic or timeout :man_shrugging:.
+  - `/wait-next/:topic`: HTTP endpoint that hangs until the next message in a topic or timeout :man_shrugging:.
     - Always returns `application/octet-stream`
   - `/listen/:topic`: Websocket endpoint that connects to a topic and is able to also send messages to it.
     - It receives the messages it sents
