@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+    <title>Websocket chat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        form {
+            height: 100%;
+            width: 100%;
+        }
+
+        input#chan {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            text-align: center;
+            background-color: red;
+        }
+
+        input#chan.synchronized {
+            background-color: green;
+        }
+
+        #bottom {
+            position: fixed;
+            display: absolute;
+            bottom: 0px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #bottom input,
+        button {
+            width: 100%;
+        }
+
+        #bottom button {
+            height: 50px;
+        }
+
+        /* form {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        } */
+    </style>
+</head>
+
+<body>
+    <form>
+        <input id="chan" value="pub">
+        <ul id="messages"></ul>
+        <div id="bottom">
+            <input id="m" autocomplete="off" />
+            <button>Send</button>
+        </div>
+    </form>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            const channelInput = $('input#chan')
+            window.websocketJumpTimeout = setTimeout(() => {
+                handleChangeWebsocketRoom()
+            }, 1000)
+            handleChangeWebsocketRoom()
+            function tickChannelColor() {
+                const inputChan = channelInput.val()
+                const currentChan = window.channelName
+                $('input#chan').toggleClass('synchronized', inputChan === currentChan)
+            }
+            function handleChangeWebsocketRoom() {
+                window.channelName = channelInput.val()
+                tickChannelColor()
+                console.log("changing to ", window.channelName)
+                if (window.ws) {
+                    window.ws.close()
+                }
+                window.ws = new WebSocket(getWebsocketUrl(window.channelName))
+                window.ws.addEventListener('message', function (msg) {
+                    msg.data.text().then((text) => {
+                        $('#messages').append($('<li>').text(text));
+                        console.log("received: ", msg)
+                        window.scrollTo(0, document.body.scrollHeight);
+                    })
+                });
+                window.ws.addEventListener('open', () => {
+                    window.ws.send("new user connected")
+                })
+            }
+            function getWebsocketUrl(channel) {
+                return `ws://${document.baseURI.slice(7)}listen/${channel}`
+            }
+            function handleChangeChannelName() {
+                clearTimeout(window.websocketJumpTimeout)
+                tickChannelColor()
+                window.websocketJumpTimeout = setTimeout(() => {
+                    handleChangeWebsocketRoom()
+                }, 1000)
+            }
+            channelInput.on('change paste keyup', handleChangeChannelName)
+            handleChangeWebsocketRoom()
+            
+            $('form').submit(function (e) {
+                e.preventDefault()
+                window.ws.send($('#m').val())
+                $('#m').val('');
+                // return false;
+            });
+        });
+    </script>
+</body>
+
+</html>
