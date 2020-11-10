@@ -4,7 +4,7 @@ A simple server that implements websocket raw data channels
 
 Think like a IRC room but for web devices
 
-Yeah, there are things like [NATS](https://nats.io/) and [MQTT](https://mqtt.org/) but they doesn't integrates using routes with express and are more complex.
+Yeah, there are things like [NATS](https://nats.io/) and [MQTT](https://mqtt.org/) but they doesn't integrates using routes with express and are more complex and I can't use it from a browser.
 
 You can playground it opening the / endpoint when running this, the playground is a simple chat app that supports reconnection. Also there are a demo instance [here](https://ws-channel.herokuapp.com/)
 
