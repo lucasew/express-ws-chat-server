@@ -52,6 +52,13 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/getenv@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/getenv/-/getenv-1.0.0.tgz#fa5e6901e9fb84bfb40205d4952fd06c8afcf006"
+  integrity sha512-w8qs+09o4pfFb/4XkHJzsHEZ2m36s/d9vJhglbOeSiSe9mPu0OmCQbU4iEgGl2DNP9WfOHCVd6fBwIvBd4AZhg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/mime@*":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.3.tgz#c893b73721db73699943bfc3653b1deb7faa4a3a"
@@ -447,6 +454,11 @@ get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
   integrity sha1-uWjGsKBDhDJJAui/Gl3zJXmkUP4=
+
+getenv@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/getenv/-/getenv-1.0.0.tgz#874f2e7544fbca53c7a4738f37de8605c3fcfc31"
+  integrity sha512-7yetJWqbS9sbn0vIfliPsFgoXMKn/YMF+Wuiog97x+urnSRRRZ7xB+uVkwGKzRgq9CDFfMQnE9ruL5DHv9c6Xg==
 
 glob-parent@~5.1.0:
   version "5.1.1"

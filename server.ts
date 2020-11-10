@@ -1,6 +1,7 @@
 import express from 'express';
 import "express-async-errors";
 import router from './index';
+import getenv from 'getenv';
 
 const app = router
 
@@ -26,7 +27,7 @@ const errHandler: express.ErrorRequestHandler = (err, req, res, next) => {
 
 app.use(errHandler);
 
-const port = 3000;
+const port = getenv.int("PORT", 3000)
 app.listen(port, () => {
   console.log(`Listening @ port ${port}`)
 });
